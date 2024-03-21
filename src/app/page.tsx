@@ -16,10 +16,8 @@ const createPost = async (formData: FormData) => {
   revalidatePath('/');
 };
 
-const deletePost = async (formData: FormData) => {
+const deletePost = async (id: string) => {
   'use server';
-
-  const id = formData.get('id') as string;
 
   await prisma.post.delete({
     where: {
@@ -49,8 +47,7 @@ const Home = async () => {
             <div className="flex items-center">
               <Link href={`/posts/${post.id}`}>Go To</Link> |{' '}
               <Link href={`/posts/${post.id}/edit`}>Edit</Link> |{' '}
-              <form action={deletePost}>
-                <input type="hidden" name="id" value={post.id} />
+              <form action={deletePost.bind(null, post.id)}>
                 <button type="submit">Delete</button>
               </form>
             </div>
